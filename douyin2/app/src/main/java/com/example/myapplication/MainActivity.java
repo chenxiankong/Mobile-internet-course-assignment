@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity  {
         viewPagerAdapter = new ViewPagerAdapter(this,viewPager2,list_source,list_source.size());//适配器初始化
         viewPager2.setAdapter(viewPagerAdapter);//适配器绑定
         viewPager2.setOrientation(ViewPager2.ORIENTATION_VERTICAL);//设置viewpager2滑动方向
-        viewPager2.setOffscreenPageLimit(5);//设置viewPager2缓冲数目
+        viewPager2.setOffscreenPageLimit(10);//设置viewPager2缓冲数目
 
         //viewPager2滑动事件监听，处理滑动时视频的播放暂停
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
