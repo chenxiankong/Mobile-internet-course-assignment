@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <RelativeLayout
+        android:id="@+id/re_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <!--子控件与父控件的四周对其，实现抖音全屏效果-->
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:id="@+id/IV_cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:srcCompat="@tools:sample/avatars"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="35dp"
+            android:orientation="horizontal"
+
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:text="推荐"
+                    android:clickable="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="附近"
+                    android:clickable="true"
+                    android:textColor="#f2f2f2"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="16dp"
+                android:clickable="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/search_icon"
+                android:tint="#f2f2f2"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:clickable="true"
+                android:src="@drawable/icon_storyhome_open"
+                android:tint="#f2f2f2"
+                />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/me"
+        app:civ_border_color="@android:color/white"
+        app:civ_border_width="2dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bt_heart"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp" />
+
+    <ImageView
+        android:id="@+id/image_pause"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/image_pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:text="00:00/00:00"
+        android:textColor="@android:color/white"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="@id/image_pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_likecount"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="1W"
+        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintLeft_toLeftOf="@id/bt_heart"
+        app:layout_constraintRight_toRightOf="@id/bt_heart"
+        app:layout_constraintTop_toBottomOf="@id/bt_heart" />
+
+    <com.sackcentury.shinebuttonlib.ShineButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/bt_heart"
+        app:btn_color="@android:color/white"
+        app:btn_fill_color="#FF0000"
+        app:siShape="@raw/heart"
+        android:elevation="10dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/commit"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        app:srcCompat="@drawable/msg_icon"
+        android:visibility="visible"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="@+id/bt_heart"
+        app:layout_constraintStart_toStartOf="@+id/bt_heart"
+        app:layout_constraintTop_toBottomOf="@+id/bt_heart"
+        app:layout_constraintBottom_toTopOf="@+id/download"/>
+
+    <TextView
+        android:id="@+id/commitcount"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="1W"
+        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintLeft_toLeftOf="@id/commit"
+        app:layout_constraintRight_toRightOf="@id/commit"
+        app:layout_constraintTop_toBottomOf="@id/commit" />
+
+    <Button
+        android:id="@+id/download"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:visibility="visible"
+        android:clickable="true"
+        android:background="@drawable/share_icon"
+        app:layout_constraintEnd_toEndOf="@+id/bt_heart"
+        app:layout_constraintStart_toStartOf="@+id/bt_heart"
+        app:layout_constraintTop_toBottomOf="@+id/commit" />
+    <TextView
+        android:id="@+id/sharecount"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="1W"
+        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintLeft_toLeftOf="@id/download"
+        app:layout_constraintRight_toRightOf="@id/download"
+        app:layout_constraintTop_toBottomOf="@id/download" />
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\@LILILI\n"
+        android:clickable="true"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@id/tv_description"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="这是一条一起学猫叫的视频"
+        android:textSize="17dp"
+        android:clickable="true"
+        android:layout_marginTop="5dp"
+        app:layout_goneMarginBottom="5dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@id/seekBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="10dp"/>
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ly2"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <LinearLayout
+        android:id="@+id/ly2"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="首页"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="关注"
+            android:textColor="#f2f2f2"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/add_bg"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="消息"
+            android:textColor="#f2f2f2"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="我"
+            android:textColor="#f2f2f2"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
