@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity  {
             final ViewPagerAdapter.ViewPagerViewHolder viewHolder = ( ViewPagerAdapter.ViewPagerViewHolder) itemView.getTag();
             //当前item页播放，当前页的前一页暂停
             if(viewHolder.mPosition==position){
-                Log.d("TAG", "startPlay: "+String.valueOf(position)+"   "+String.valueOf(count));
                 viewHolder.mImage_pause.setVisibility(View.INVISIBLE);
                 viewHolder.iv_cover.setVisibility(View.INVISIBLE);
                 viewHolder.mVideoview.start();

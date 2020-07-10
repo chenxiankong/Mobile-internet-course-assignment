@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +47,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 //    private  DownloadManager downloadManager;
 //    private  long reference;
     public static int ItemCount=30;//初始的Item数量
+    private static int count_in=0;
+    private static int count_out=0;
+    private static int count_listen=0;
 
     public ViewPagerAdapter(Context mContext, ViewPager2 viewPager2,List list,int list_size){
             this.mContext=mContext;
@@ -58,23 +62,22 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         Uri path=Uri.parse( list.get(holder.mPosition%list_size).getFeedurl());
         holder.mVideoview.setVideoURI(path);
         holder.iv_cover.setVisibility(View.VISIBLE);
+        Log.d("TAG","j进来了"+count_in++);
     }
 
     @Override
     public void onViewDetachedFromWindow(@NonNull ViewPagerViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         holder.mVideoview.stopPlayback();
+        Log.d("TAG","出去了"+count_out++);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @NonNull
     @Override
     public ViewPagerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ViewPagerViewHolder holder = new ViewPagerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_page, parent, false));
-        return holder;
-    }
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public void onBindViewHolder(@NonNull final ViewPagerViewHolder holder, int position) {
+
         // 创建手势检测器实例 & 传入OnGestureListener接口（需要复写对应方法）
         GestureDetector mGestureDetector = new GestureDetector(mContext,holder.onGestureListenernew );
         // 创建 & 设置OnDoubleTapListener接口实现类
@@ -86,6 +89,18 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 return true;
             }
         });//监听器：点击屏幕暂停播放  暂停图片展示Listen,双击点赞播放动画
+        //绑定监听
+        holder.mVideoview.setOnErrorListener(mp_error_Listener);//监听器：不弹出播放失败对话框
+        holder.mVideoview.setOnCompletionListener(play_loop_Listen);//设置循环播放
+        holder.mVideoview.setOnPreparedListener(holder.vedio_pre_listen);
+        holder.mSeekBar.setOnSeekBarChangeListener(holder.seekBar_listen);//滑动过程处理，滑动条与播放进度textview 的交互
+        holder.bt_heart.setChecked(false);
+
+        return holder;
+    }
+    @Override
+    public void onBindViewHolder(@NonNull final ViewPagerViewHolder holder, int position) {
+
         int likecount=list.get(position%list_size).getLikecount();
         //点赞数格式
         if(likecount<=999){
@@ -103,15 +118,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         holder.tv_description.setText(String.valueOf(list.get(position%list_size).getDescription())+"\n");
         holder.tv_nickname.setText("@"+String.valueOf(list.get(position%list_size).getNickname()));
         holder.mPosition = position;
-        //绑定监听，必须在onBindViewHolder里绑定
-        holder.mVideoview.setOnErrorListener(holder.mp_error_Listener);//监听器：不弹出播放失败对话框
-        holder.mVideoview.setOnCompletionListener(holder.play_loop_Listen);//设置循环播放
-        holder.mVideoview.setOnPreparedListener(holder.vedio_pre_listen);
-        holder.mSeekBar.setOnSeekBarChangeListener(holder.seekBar_listen);//滑动过程处理，滑动条与播放进度textview 的交互
-
-        holder.bt_heart.setChecked(false);
-
-
     }
     @Override
     public int getItemCount() {
@@ -121,26 +127,22 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     @Override
     public void onViewRecycled(@NonNull ViewPagerViewHolder holder) {
         super.onViewRecycled(holder);
-        Log.d("8u8u", "onViewRecycled: ");
+        Log.d("TAG", "onViewRecycled 资源回收 ");
         holder.mVideoview.stopPlayback();
         holder.mVideoview.setOnPreparedListener(null);
         holder.mVideoview.setOnCompletionListener(null);
         holder.mVideoview.setOnErrorListener(null);
     }
-
+    public MediaPlayer.OnErrorListener mp_error_Listener= (mp, what, extra) -> false;//监听器：不弹出播放失败对话框
+    public MediaPlayer.OnCompletionListener play_loop_Listen= mp -> mp.start();//设置循环播放
     public static class ViewPagerViewHolder extends RecyclerView.ViewHolder {
-        public MediaPlayer.OnErrorListener mp_error_Listener=new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                return false;
-            }
-        };//监听器：不弹出播放失败对话框
-        public MediaPlayer.OnCompletionListener play_loop_Listen=new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mVideoview.start();
-            }
-        };//设置循环播放
+//        public MediaPlayer.OnErrorListener mp_error_Listener=new MediaPlayer.OnErrorListener() {
+//            @Override
+//            public boolean onError(MediaPlayer mp, int what, int extra) {
+//                return false;
+//            }
+//        };//监听器：不弹出播放失败对话框
+
         public SeekBar.OnSeekBarChangeListener seekBar_listen=new SeekBar.OnSeekBarChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -150,9 +152,8 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
                     //当前滑动条拖动进度
                     float seekbar_cur=(float)(seekBar.getProgress()*mVideoview.getDuration())/100;
-                    //tv_progress实时显示
+                    //拖动进度条时改变text值
                     mTv_progress.setText(dateFormat.format(new Date((int)seekbar_cur))+"/"+dateFormat.format(new Date(mVideoview.getDuration())));
-
             }
             //滑动开始时处理
             @Override
@@ -272,10 +273,15 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 int total=mVideoview.getDuration();         //获取总时间
                 float progress=(float) current/total*100;   //计算当前播放百分比
                 mSeekBar.setProgress((int)progress);      //设置进度条
-                //格式转化，进度textview设置
-                SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss", Locale.CHINA);
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-                mTv_progress.setText(dateFormat.format(new Date(current))+"/"+dateFormat.format(new Date(total)));
+                /*
+                为什么下面的进度text注释了?
+                    因为根据抖音APP的特点，没有拖动进度条seekbar时，进度值是隐藏的，
+                    ·当拖动进度条时，进度值的显示与改变会由seekbar的监听函数来负责，所以这里就不用管了
+                 */
+//                //格式转化，进度textview设置
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss", Locale.CHINA);
+//                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+//                mTv_progress.setText(dateFormat.format(new Date(current))+"/"+dateFormat.format(new Date(total)));
             }
             handler.postDelayed(runnable,1000);//监听间隔1s
         }
